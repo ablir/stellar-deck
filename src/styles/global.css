@@ -1,0 +1,76 @@
+:root {
+  /* Sensible defaults; overridden per-aspect at runtime via themeVars(). */
+  --accent: #39f5e6;
+  --accent-soft: #1b8c8c;
+  --glow: rgba(57, 245, 230, 0.55);
+  --smoke: rgba(140, 240, 255, 0.4);
+  --surface: #06141b;
+  --surface-raised: #0c2230;
+  --text: #dffaff;
+  --scene-gradient: radial-gradient(circle at 30% 20%, #0a3a44 0%, #04141b 55%, #01080c 100%);
+
+  --panel-width: 280px;
+  --font-display: 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: #02060a;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,198 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* A soft coloured glow that bleeds the aspect colour into the whole view. */
+.scene__halo {
+  position: absolute;
+  right: -12%;
+  top: -18%;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 62%);
+  opacity: 0.4;
+  filter: blur(20px);
+}
+
+.scene__planet {
+  position: absolute;
+  right: -8vmax;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow:
+    inset -4vmax -3vmax 8vmax rgba(0, 0, 0, 0.75),
+    0 0 8vmax var(--glow);
+  isolation: isolate;
+}
+
+.scene__surface {
+  position: absolute;
+  inset: 0;
+  background: var(--scene-gradient);
+}
+
+/* Terminator shadow to give the orb a lit side. */
+.scene__shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 32% 38%, transparent 40%, rgba(0, 0, 0, 0.78) 78%);
+}
+
+/* ---------------- TECH ---------------- */
+.scene__grid {
+  position: absolute;
+  inset: -25%;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 40%, transparent) 1px, transparent 1px);
+  background-size: 3vmax 3vmax;
+  opacity: 0.28;
+  animation: grid-roll 18s linear infinite;
+  transform: rotate(8deg);
+}
+
+@keyframes grid-roll {
+  from { background-position: 0 0; }
+  to { background-position: 0 3vmax; }
+}
+
+.scene__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  transform: translate(-50%, -50%) rotate(0deg);
+  box-shadow: 0 0 18px var(--glow);
+}
+.scene__ring--a {
+  width: 118%;
+  height: 118%;
+  border-style: dashed;
+  animation: spin 26s linear infinite;
+}
+.scene__ring--b {
+  width: 138%;
+  height: 64%;
+  animation: spin 40s linear infinite reverse;
+  opacity: 0.6;
+}
+
+.scene__scan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 25%, transparent) 50%,
+    transparent 100%
+  );
+  height: 30%;
+  animation: scan-move 6s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes scan-move {
+  0%, 100% { transform: translateY(-40%); opacity: 0; }
+  50% { transform: translateY(280%); opacity: 0.8; }
+}
+
+/* ---------------- MYSTICAL ---------------- */
+.scene__aurora {
+  position: absolute;
+  inset: -20%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      color-mix(in srgb, var(--accent) 55%, transparent) 60deg,
+      transparent 130deg,
+      color-mix(in srgb, #6ff0c8 45%, transparent) 220deg,
+      transparent 300deg
+    );
+  filter: blur(22px);
+  opacity: 0.55;
+  animation: rotate-c 38s linear infinite;
+  mix-blend-mode: screen;
+}
+
+.scene__runes {
+  position: absolute;
+  inset: 0;
+  animation: rotate-c 50s linear infinite;
+}
+.scene__runes span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 2.2vmax;
+  color: color-mix(in srgb, var(--accent) 80%, #fff);
+  text-shadow: 0 0 14px var(--glow);
+  transform: rotate(calc(var(--r) * 60deg)) translateX(20vmax) rotate(calc(var(--r) * -60deg));
+  animation: rune-twinkle 4s ease-in-out infinite;
+  animation-delay: calc(var(--r) * 0.4s);
+}
+
+@keyframes rune-twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ---------------- BEASTIAL ---------------- */
+.scene__molten {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 38% 64%, color-mix(in srgb, var(--accent) 85%, #fff) 0%, transparent 26%),
+    radial-gradient(circle at 64% 40%, color-mix(in srgb, var(--accent) 60%, transparent) 0%, transparent 30%);
+  mix-blend-mode: screen;
+  animation: molten-pulse 5s ease-in-out infinite;
+}
+
+@keyframes molten-pulse {
+  0%, 100% { opacity: 0.6; filter: brightness(0.9); }
+  50% { opacity: 1; filter: brightness(1.4); }
+}
+
+.scene__embers {
+  position: absolute;
+  inset: 0;
+}
+.scene__embers span {
+  position: absolute;
+  bottom: -4%;
+  left: var(--ex, 50%);
+  width: 0.5vmax;
+  height: 0.5vmax;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 90%, #fff);
+  box-shadow: 0 0 10px var(--glow);
+  animation: ember-rise var(--ed, 5s) ease-in infinite;
+  animation-delay: calc(var(--e) * -0.6s);
+}
+
+@keyframes ember-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-40vmax) scale(0.2); opacity: 0; }
+}
+
+/* Shared */
+@keyframes spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes rotate-c {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.scene__aurora,
+.scene__runes { transform-origin: center; }

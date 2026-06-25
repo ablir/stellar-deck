@@ -1,0 +1,53 @@
+.starfield {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.starfield__layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* Each layer is duplicated 2000px below itself (via ::after) so the upward
+   scroll loops seamlessly. */
+.starfield__layer::after {
+  content: '';
+  position: absolute;
+  top: 2000px;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  box-shadow: inherit;
+}
+
+.starfield__layer--far {
+  animation: star-drift 120s linear infinite;
+  opacity: 0.5;
+}
+.starfield__layer--mid {
+  animation: star-drift 80s linear infinite;
+  opacity: 0.75;
+}
+.starfield__layer--near {
+  width: 2px;
+  height: 2px;
+  animation: star-drift 50s linear infinite;
+}
+.starfield__layer--near::after {
+  width: 2px;
+  height: 2px;
+}
+
+@keyframes star-drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-2000px); }
+}
