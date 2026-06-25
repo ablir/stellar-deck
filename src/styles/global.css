@@ -73,4 +73,12 @@ button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+
+  /* Exempt the dry-ice fog: it's the signature atmospheric effect and conveys
+     no critical information, so keep it drifting even when the user prefers
+     reduced motion. */
+  .fog__puff {
+    animation-duration: var(--dur, 28s) !important;
+    animation-iteration-count: infinite !important;
+  }
 }

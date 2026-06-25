@@ -1,0 +1,93 @@
+.cardmodal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 5vh 1rem;
+}
+
+.cardmodal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(4, 8, 14, 0.72), rgba(0, 0, 0, 0.9));
+  backdrop-filter: blur(6px);
+}
+
+.cardmodal__stage {
+  position: relative;
+  z-index: 1;
+  /* Drives the focused card size; clamps so it fits any viewport. */
+  width: min(70vh, 86vw, 420px);
+  perspective: 1600px;
+}
+
+/* Free-floating fog overlay: spans wider than the card, rises from below and
+   drifts IN FRONT of the card's base (z-index above it) so the fog is not
+   boxed inside the card frame. The mask fades the fog out toward the top, so it
+   stays concentrated at the base and never veils the card body — the card
+   itself remains fully opaque. */
+.cardmodal__fog {
+  position: absolute;
+  left: 50%;
+  bottom: -30%;
+  width: 320%;
+  height: 125%;
+  transform: translateX(-50%);
+  z-index: 5; /* above the card (z-index 2) so fog passes in front of its base */
+  pointer-events: none;
+  /* Two masks combined: fade out toward the top (keeps fog at the base) AND
+     fade out toward the left/right edges, so the wide fog field has no visible
+     boundary on any side. mask-composite: intersect keeps only where BOTH are
+     opaque. */
+  --fog-mask-v: linear-gradient(to top, #000 0%, #000 22%, transparent 58%);
+  --fog-mask-h: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  -webkit-mask-image: var(--fog-mask-v), var(--fog-mask-h);
+  mask-image: var(--fog-mask-v), var(--fog-mask-h);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* The focused card keeps the same .card flip mechanics, just larger and lit. */
+.card--focus {
+  position: relative;
+  z-index: 2;
+  aspect-ratio: 3 / 4.2;
+  width: 100%;
+  height: auto; /* let aspect-ratio drive height inside the auto-height stage */
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  border-radius: 18px;
+}
+
+.card--focus .card__frame {
+  box-shadow:
+    inset 0 0 50px rgba(0, 0, 0, 0.6),
+    0 0 50px color-mix(in srgb, var(--glow) 60%, transparent);
+}
+
+.cardmodal__close {
+  position: absolute;
+  top: -2.6rem;
+  right: 0;
+  z-index: 6;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--text);
+  font-size: 0.9rem;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.cardmodal__close:hover {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+  transform: scale(1.08);
+}
+
+@media (max-width: 820px) {
+  .cardmodal__stage {
+    width: min(62vh, 82vw);
+  }
+}

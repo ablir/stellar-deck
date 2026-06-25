@@ -1,0 +1,43 @@
+.fog {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 1;
+}
+
+.fog__puff {
+  position: absolute;
+  bottom: 0;
+  left: var(--x, 50%);
+  width: calc(var(--fog-size, 26vmin) * var(--size-mul, 1));
+  aspect-ratio: 377 / 329; /* native sprite ratio */
+  /* Tint: fill with the planet's smoke colour, cut to the smoke shape via the
+     PNG's alpha channel. */
+  background-color: var(--smoke-solid, #cfefff);
+  -webkit-mask: url('./smoke.png') center / contain no-repeat;
+  mask: url('./smoke.png') center / contain no-repeat;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translate(-50%, 20%) scale(0.55) rotate(var(--rot0, 0deg));
+  animation: fog-rise var(--dur, 28s) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes fog-rise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 25%) scale(0.55) rotate(var(--rot0, 0deg));
+  }
+  12% {
+    opacity: var(--fog-peak, 0.5);
+  }
+  60% {
+    opacity: calc(var(--fog-peak, 0.5) * 0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--drift, 0%)), var(--rise, -220%))
+      scale(var(--scale, 3.4)) rotate(calc(var(--rot0, 0deg) + var(--rot1, 40deg)));
+  }
+}
