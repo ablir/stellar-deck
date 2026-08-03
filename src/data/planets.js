@@ -5,9 +5,10 @@
 //
 // Names, subtitles and the full FR/EN lore below are the client's official copy
 // from "(COFI) Official Website Content Revision 2 (planet presentation)".
-// All five planets are revealed. To re-lock one behind "to be announced"
-// (Rev 1, Part 1 step 2) set `tba: true` — its blackened art (tbaImg) is kept
-// on hand and the home page + lore page will gate themselves automatically.
+// Didaris and Solanar stay `tba` until official release (Rev 1, Part 1 step 2).
+// On black, the blackened TBA art was invisible, so the home page renders TBA
+// planets as flat colour silhouettes (mask trick in Home.css): visible, but
+// non-distinctive — only the (safe) colour scheme is hinted.
 
 import xaraglioneImg from '../assets/planets/xaraglione.png'
 import orgaImg from '../assets/planets/orga.png'
@@ -166,7 +167,7 @@ export const PLANETS = [
     img: didarisImg,
     tbaImg: didarisTbaImg,
     bg: didarisBg,
-    tba: false,
+    tba: true,
     lore: {
       fr: [
         'Autrefois prospère et unifié, le monde de Didaris est pourtant proche de la destruction.',
@@ -204,7 +205,7 @@ export const PLANETS = [
     img: solanarImg,
     tbaImg: solanarTbaImg,
     bg: solanarBg,
-    tba: false,
+    tba: true,
     lore: {
       fr: [
         'Nul ne sait comment la vie a pu émerger sur Solanar, une planète reculée, hostile, et enfouie sous les glaces éternelles.',

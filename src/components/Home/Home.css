@@ -164,10 +164,20 @@
   white-space: nowrap;
 }
 
-/* Expansion planets: blackened "to be announced" art, muted label. */
+/* Expansion planets: the blackened TBA art vanishes on a black page, so we
+   render its alpha as a flat colour silhouette instead — full orange for
+   Didaris, ice blue for Solanar. Visible, but non-distinctive: the shape and
+   the (safe) colour scheme are hinted, none of the art's detail shows. */
 .orbit-planet.is-tba .orbit-planet__body {
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
-  opacity: 0.85;
+  background: var(--planet);
+  mask: var(--planet-img) center / contain no-repeat;
+  -webkit-mask: var(--planet-img) center / contain no-repeat;
+  opacity: 0.9;
+}
+/* Glow on the parent: filter runs before mask, so on the body itself the
+   drop-shadow would be clipped away by the silhouette mask. */
+.orbit-planet.is-tba {
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--planet) 35%, transparent));
 }
 .orbit-planet.is-tba .orbit-planet__label {
   color: rgba(190, 205, 225, 0.45);
