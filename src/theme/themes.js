@@ -5,21 +5,27 @@
 // "aspect" palettes, components derive their neon accent from a single colour
 // via accentVars(); surface/text defaults come from :root in global.css.
 
-// Rarity → neon accent. Placeholder ladder; the client will confirm the exact
-// levels and we only need to adjust these hex values + the ORDER array.
-export const RARITY_COLORS = {
-  Common: '#9fb2c9',
-  Uncommon: '#57e39b',
-  Rare: '#4aa8ff',
-  Epic: '#c46bff',
-  Legendary: '#ffcf4d',
-  Mythic: '#ff5d7a',
+// Rarity — the client's official six-level ladder (Rev 1, Part 3 step 1),
+// with the specified colours kept luminous enough to read on black:
+//   Commune/Common → white, Peu commune/Uncommon → green, Rare → light blue,
+//   Ultra rare → yellow, Épique/Epic → violet, Légendaire/Legendary → orange.
+export const RARITIES = {
+  common: { label: { fr: 'Commune', en: 'Common' }, color: '#f2f5fa' },
+  uncommon: { label: { fr: 'Peu commune', en: 'Uncommon' }, color: '#57e39b' },
+  rare: { label: { fr: 'Rare', en: 'Rare' }, color: '#6fd3ff' },
+  'ultra-rare': { label: { fr: 'Ultra rare', en: 'Ultra Rare' }, color: '#ffd75e' },
+  epic: { label: { fr: 'Épique', en: 'Epic' }, color: '#c46bff' },
+  legendary: { label: { fr: 'Légendaire', en: 'Legendary' }, color: '#ff9a3d' },
 }
 
-export const RARITY_ORDER = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic']
+export const RARITY_ORDER = ['common', 'uncommon', 'rare', 'ultra-rare', 'epic', 'legendary']
 
 export function rarityColor(rarity) {
-  return RARITY_COLORS[rarity] ?? 'var(--accent)'
+  return RARITIES[rarity]?.color ?? 'var(--accent)'
+}
+
+export function rarityLabel(rarity) {
+  return RARITIES[rarity]?.label ?? null
 }
 
 // Build CSS custom properties that tint a subtree with a single accent colour.

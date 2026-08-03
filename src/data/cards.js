@@ -37,7 +37,7 @@ export const CARDS = [
     released: true,
     front: monsterFront,
     back: blackBack,
-    rarity: 'Legendary',
+    rarity: 'legendary',
     name: { fr: 'Serpent de Braise', en: 'Emberserpent' }, // placeholder name
     stats: { power: 9, defense: 6, cost: 7 },
     ability: {
@@ -56,7 +56,7 @@ export const CARDS = [
     subtype: 'monster',
     released: false,
     back: blackBack,
-    rarity: 'Rare',
+    rarity: 'rare',
   },
 
   // ── Bestiary · Elite (RELEASED) ────────────────────────────────────────────
@@ -68,7 +68,7 @@ export const CARDS = [
     released: true,
     front: eliteFront,
     back: yellowBack,
-    rarity: 'Epic',
+    rarity: 'epic',
     name: { fr: 'Archimage Foudroyant', en: 'Stormcaller Archmage' }, // placeholder name
     stats: { power: 6, defense: 5, cost: 5 },
     ability: {
@@ -87,7 +87,7 @@ export const CARDS = [
     subtype: 'elite',
     released: false,
     back: yellowBack,
-    rarity: 'Uncommon',
+    rarity: 'uncommon',
   },
 
   // ── Bestiary · Soul Eater (RELEASED) ───────────────────────────────────────
@@ -99,7 +99,7 @@ export const CARDS = [
     released: true,
     front: soulEaterFront,
     back: blueBack,
-    rarity: 'Rare',
+    rarity: 'rare',
     name: { fr: 'Œil Dévoreur', en: 'Devouring Eye' }, // placeholder name
     stats: { power: 5, defense: 4, cost: 4 },
     ability: {
@@ -118,21 +118,21 @@ export const CARDS = [
     subtype: 'soul-eater',
     released: false,
     back: blueBack,
-    rarity: 'Epic',
+    rarity: 'epic',
   },
 
   // ── Character (all unreleased — art & copy pending) ─────────────────────────
-  { id: 'chr-hero-001', ref: 'CHR-H-001', group: 'character', subtype: 'hero', released: false, back: blackBack, rarity: 'Legendary' },
-  { id: 'chr-role-001', ref: 'CHR-R-001', group: 'character', subtype: 'role', released: false, back: blackBack, rarity: 'Rare' },
-  { id: 'chr-cele-001', ref: 'CHR-C-001', group: 'character', subtype: 'celestial', released: false, back: blackBack, rarity: 'Mythic' },
+  { id: 'chr-hero-001', ref: 'CHR-H-001', group: 'character', subtype: 'hero', released: false, back: blackBack, rarity: 'legendary' },
+  { id: 'chr-role-001', ref: 'CHR-R-001', group: 'character', subtype: 'role', released: false, back: blackBack, rarity: 'rare' },
+  { id: 'chr-cele-001', ref: 'CHR-C-001', group: 'character', subtype: 'celestial', released: false, back: blackBack, rarity: 'ultra-rare' },
 
   // ── Enhancement (all unreleased) ────────────────────────────────────────────
-  { id: 'enh-dom-001', ref: 'ENH-D-001', group: 'enhancement', subtype: 'domain', released: false, back: blackBack, rarity: 'Uncommon' },
-  { id: 'enh-key-001', ref: 'ENH-K-001', group: 'enhancement', subtype: 'key', released: false, back: blackBack, rarity: 'Rare' },
+  { id: 'enh-dom-001', ref: 'ENH-D-001', group: 'enhancement', subtype: 'domain', released: false, back: blackBack, rarity: 'uncommon' },
+  { id: 'enh-key-001', ref: 'ENH-K-001', group: 'enhancement', subtype: 'key', released: false, back: blackBack, rarity: 'rare' },
 
   // ── Unique (all unreleased) ─────────────────────────────────────────────────
-  { id: 'unq-xtra-001', ref: 'UNQ-X-001', group: 'unique', subtype: 'xtra', released: false, back: blackBack, rarity: 'Epic' },
-  { id: 'unq-player-001', ref: 'UNQ-P-001', group: 'unique', subtype: 'player', released: false, back: blackBack, rarity: 'Mythic' },
+  { id: 'unq-xtra-001', ref: 'UNQ-X-001', group: 'unique', subtype: 'xtra', released: false, back: blackBack, rarity: 'epic' },
+  { id: 'unq-player-001', ref: 'UNQ-P-001', group: 'unique', subtype: 'player', released: false, back: blackBack, rarity: 'ultra-rare' },
 ]
 
 // Cards for a given group id (or all cards when no group given).

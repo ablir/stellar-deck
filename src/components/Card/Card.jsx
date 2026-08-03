@@ -1,5 +1,5 @@
 import { SUBTYPES } from '../../data/categories.js'
-import { accentVars, rarityColor } from '../../theme/themes.js'
+import { accentVars, rarityColor, rarityLabel } from '../../theme/themes.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
 import { UI } from '../../i18n/strings.js'
 import './Card.css'
@@ -44,12 +44,15 @@ export default function Card({ card, index = 0, onOpen }) {
         onKeyDown={onKey}
       >
         <img className="card-tile__img" src={img} alt={name} loading="lazy" draggable="false" />
-        {card.rarity && (
-          <span className="card-tile__rarity" style={{ '--rarity': rColor }}>
-            {card.rarity}
-          </span>
-        )}
-        {!card.released && <span className="card-tile__lock">{t(UI.unreleased)}</span>}
+        <div className="card-tile__meta">
+          {/* Rarity only on face-up cards, centre-bottom (Rev 1, Part 3 step 2). */}
+          {card.released && card.rarity && (
+            <span className="card-tile__rarity" style={{ '--rarity': rColor }}>
+              {t(rarityLabel(card.rarity))}
+            </span>
+          )}
+          {!card.released && <span className="card-tile__lock">{t(UI.unreleased)}</span>}
+        </div>
       </div>
 
       <div className="card-slot__caption">
