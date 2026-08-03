@@ -169,9 +169,10 @@
    orange halo for Didaris, ice blue for Solanar. Shape and safe colour scheme
    are hinted, none of the art's detail shows. */
 .orbit-planet.is-tba .orbit-planet__body {
-  /* Tight bright rim + wide soft halo. */
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--planet) 85%, transparent))
-    drop-shadow(0 0 20px color-mix(in srgb, var(--planet) 50%, transparent));
+  /* Tight bright rim + wide soft halo (--planet-glow can differ from the
+     planet's identity colour, e.g. Didaris glows yellow while locked). */
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--planet-glow) 85%, transparent))
+    drop-shadow(0 0 20px color-mix(in srgb, var(--planet-glow) 50%, transparent));
 }
 .orbit-planet.is-tba .orbit-planet__label {
   color: rgba(190, 205, 225, 0.45);

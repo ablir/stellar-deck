@@ -164,6 +164,9 @@ export const PLANETS = [
     name: 'Didaris',
     subtitle: { fr: 'La planète brisée', en: 'The Broken Planet' },
     color: '#ff7a2f',
+    // TBA silhouette glows yellow (client tweak) — the orange identity colour
+    // above still applies everywhere else once the planet is revealed.
+    tbaGlow: '#ffd94d',
     img: didarisImg,
     tbaImg: didarisTbaImg,
     bg: didarisBg,

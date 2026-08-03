@@ -65,6 +65,7 @@ export default function Home() {
                 left: `${planet.left}%`,
                 top: `${planet.top}%`,
                 '--planet': planet.color,
+                '--planet-glow': planet.tbaGlow ?? planet.color,
                 '--planet-img': `url(${planet.tba ? planet.tbaImg : planet.img})`,
                 '--i': i,
               }}
