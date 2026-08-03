@@ -6,9 +6,14 @@ import { UI } from '../../i18n/strings.js'
 import './pages.css'
 
 /**
- * PlanetLore — a planet's story page. The full playmat background + the client's
- * lore copy arrive next round; for now it renders the planet's name, a tinted
- * backdrop from its gradient, and a placeholder lore line.
+ * PlanetLore — a planet's story page, laid out per Revision 2:
+ * planet art top-centre → name → flavour subtitle → the full lore in a narrow
+ * central column → back-to-home → legal mentions at the very end.
+ *
+ * The playmat background sits on a fixed layer behind the scroll container
+ * (heavily dimmed so the text stays readable) while the text scrolls over it.
+ * Art is painted as CSS backgrounds and the context menu is blocked, so the
+ * images can't be dragged or right-click saved.
  */
 export default function PlanetLore() {
   const { id } = useParams()
@@ -29,19 +34,52 @@ export default function PlanetLore() {
   }
 
   return (
-    <motion.section
-      className="stub stub--lore"
-      style={{ backgroundImage: planet.gradient, '--accent': planet.color }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <div
+      className="lore"
+      style={{ '--accent': planet.color }}
+      onContextMenu={(e) => e.preventDefault()}
     >
-      <span className="stub__kicker">{t(UI.blackHole)}</span>
-      <h2 className="stub__title">{t(planet.name)}</h2>
-      <p className="stub__body">{t(planet.lore)}</p>
-      <Link to="/" className="stub__back">
-        ← {t(UI.backHome)}
-      </Link>
-    </motion.section>
+      {/* Fixed, dimmed playmat backdrop — the text scrolls in front of it. */}
+      <div
+        className="lore__bg"
+        style={{ backgroundImage: `url(${planet.bg})` }}
+        aria-hidden="true"
+      />
+      <div className="lore__scrim" aria-hidden="true" />
+
+      <motion.div
+        className="lore__scroll"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <article className="lore__content">
+          <div
+            className="lore__planet"
+            role="img"
+            aria-label={planet.name}
+            style={{ backgroundImage: `url(${planet.img})` }}
+          />
+          <h2 className="lore__name">{planet.name}</h2>
+          <p className="lore__subtitle">{t(planet.subtitle)}</p>
+
+          <div className="lore__text">
+            {t(planet.lore).map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+
+          <Link to="/" className="lore__back">
+            ← {t(UI.backHome)}
+          </Link>
+
+          <footer className="lore__legal">
+            {t(UI.legalLine1)}
+            <br />
+            {t(UI.legalLine2)}
+          </footer>
+        </article>
+      </motion.div>
+    </div>
   )
 }

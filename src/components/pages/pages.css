@@ -11,11 +11,6 @@
   padding: 2rem;
 }
 
-.stub--lore {
-  background-size: cover;
-  background-position: center;
-}
-
 .stub__kicker {
   font-family: var(--font-display);
   font-size: 0.7rem;
@@ -60,3 +55,145 @@
   color: var(--accent, #8fd9ff);
 }
 .stub__back:hover { text-decoration: underline; }
+
+/* ── Planet lore pages (Revision 2) ──────────────────────────────────────── */
+.lore {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* The playmat background: pinned behind the scroll container so it stays
+   fixed while the text scrolls, and heavily dimmed for readability. */
+.lore__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.lore__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 5, 10, 0.72) 0%,
+    rgba(2, 5, 10, 0.45) 30%,
+    rgba(2, 5, 10, 0.45) 70%,
+    rgba(2, 5, 10, 0.8) 100%
+  );
+}
+
+.lore__scroll {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.lore__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(1.6rem, 4vh, 3rem) 1.2rem 2rem;
+}
+
+/* Planet art, top-centre — CSS background so it can't be dragged/saved. */
+.lore__planet {
+  width: clamp(150px, 24vh, 240px);
+  aspect-ratio: 1 / 1;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 34px color-mix(in srgb, var(--accent) 45%, transparent));
+  animation: lore-planet-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes lore-planet-in {
+  from { opacity: 0; transform: translateY(-14px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+.lore__name {
+  margin-top: 0.9rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  color: color-mix(in srgb, var(--accent) 72%, #ffffff);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 2px 10px rgba(0, 0, 0, 0.85);
+}
+
+.lore__subtitle {
+  margin: 0.2rem 0 0;
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: rgba(226, 238, 255, 0.75);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* The lore itself: a narrow vertical column, never page-wide, on a soft dark
+   panel so it stays very readable over the artwork. */
+.lore__text {
+  max-width: 62ch;
+  margin-top: clamp(1.2rem, 3vh, 2rem);
+  padding: clamp(1.2rem, 2.5vw, 2rem) clamp(1.1rem, 2.5vw, 1.9rem);
+  border-radius: 16px;
+  background: rgba(3, 6, 12, 0.62);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.lore__text p {
+  margin: 0;
+  font-size: clamp(0.92rem, 1.5vw, 1rem);
+  line-height: 1.75;
+  text-align: justify;
+  hyphens: auto;
+  color: rgba(234, 242, 255, 0.92);
+}
+.lore__text p + p { margin-top: 1em; }
+/* The closing "…in your cards!" line, centred for emphasis. */
+.lore__text p:last-child {
+  text-align: center;
+  font-style: italic;
+  color: color-mix(in srgb, var(--accent) 55%, #ffffff);
+}
+
+.lore__back {
+  margin-top: 1.6rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: color-mix(in srgb, var(--accent) 75%, #ffffff);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.lore__back:hover { text-decoration: underline; }
+
+/* Legal mentions at the very end of the page (exact client text). */
+.lore__legal {
+  margin-top: 2.2rem;
+  text-align: center;
+  font-size: 0.62rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: rgba(200, 214, 232, 0.5);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 820px) {
+  .lore__content { padding: 1.2rem 0.9rem 1.6rem; }
+  .lore__text { max-width: 100%; }
+  .lore__text p { text-align: left; }
+}

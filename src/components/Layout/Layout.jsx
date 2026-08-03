@@ -7,8 +7,15 @@ import StarfieldBackground from '../StarfieldBackground/StarfieldBackground.jsx'
  * the category rail, and the centre stage where the active page renders.
  */
 export default function Layout() {
+  // Best-effort image protection (client request): block the context menu on
+  // any image so card art / planet art can't be right-click saved. True
+  // download prevention isn't possible in a browser (screenshots, devtools).
+  const guardImages = (e) => {
+    if (e.target.tagName === 'IMG') e.preventDefault()
+  }
+
   return (
-    <div className="app">
+    <div className="app" onContextMenu={guardImages}>
       <StarfieldBackground />
       <div className="app__vignette" />
 

@@ -15,12 +15,23 @@ export const UI = {
   allCards: { fr: 'Toutes les cartes', en: 'All cards' },
 
   home: { fr: 'Accueil', en: 'Home' },
+  // Exact client copy (Rev 1, Part 1 step 7).
   homeIntro: {
-    fr: 'Cinq mondes gravitent autour du Trou Noir. Choisissez une planète pour en découvrir le récit.',
-    en: 'Five worlds orbit the Black Hole. Choose a planet to uncover its lore.',
+    fr: 'Pour commencer votre voyage dans l’univers de Chains of Innocence, cliquez sur l’une des planètes.',
+    en: 'Choose a planet to take your first steps into the universe of Chains of Innocence.',
   },
   blackHole: { fr: 'Le Trou Noir', en: 'The Black Hole' },
-  toBeAnnounced: { fr: 'À venir', en: 'To be announced' },
+  // Exact client copy (Rev 1, Part 1 step 2).
+  toBeAnnounced: { fr: 'En attente de parution officielle', en: 'To be announced' },
+  // Exact client copy (Rev 1, Part 1 step 8) — also closes every lore page (Rev 2).
+  legalLine1: {
+    fr: '© 2026 Malmaison Games, tous droits réservés.',
+    en: '© 2026 Malmaison Games, all rights reserved.',
+  },
+  legalLine2: {
+    fr: 'MALMAISON GAMES®, CHAINS OF INNOCENCE® ainsi que leurs logos respectifs sont des marques déposées.',
+    en: 'MALMAISON GAMES®, CHAINS OF INNOCENCE® and their respective logos are registered trademarks owned by Malmaison Games.',
+  },
   comingSoon: { fr: 'Bientôt disponible', en: 'Coming soon' },
 
   unknownName: { fr: '???', en: '???' },

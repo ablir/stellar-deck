@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Sigil from '../Sigil/Sigil.jsx'
+import centralLogo from '../../assets/brand/central-logo.png'
 import { GROUPS, subtypeSwatch } from '../../data/categories.js'
 import { CARDS } from '../../data/cards.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
@@ -57,7 +57,7 @@ export default function SidePanel() {
           <span />
         </button>
         <NavLink to="/" className="mobile-bar__brand" aria-label={t(UI.backHome)}>
-          <Sigil size={26} />
+          <img src={centralLogo} alt="" width={26} height={26} draggable="false" />
           <span>Chains of Innocence</span>
         </NavLink>
         {langToggle}
@@ -72,7 +72,14 @@ export default function SidePanel() {
 
       <aside className={`panel ${open ? 'is-open' : ''}`}>
         <NavLink to="/" className="panel__brand" aria-label={t(UI.backHome)}>
-          <Sigil size={44} className="panel__logo" />
+          <img
+            src={centralLogo}
+            alt=""
+            width={44}
+            height={44}
+            className="panel__logo"
+            draggable="false"
+          />
           <div>
             <h1 className="panel__title">
               CHAINS<span>OF</span>INNOCENCE

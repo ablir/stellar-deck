@@ -1,15 +1,19 @@
 import { useNavigate } from 'react-router-dom'
-import Sigil from '../Sigil/Sigil.jsx'
-import { PLANETS } from '../../data/planets.js'
+import { PLANET_BY_ID, HOME_ORBIT_ORDER } from '../../data/planets.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
 import { UI } from '../../i18n/strings.js'
+import cofiLogo from '../../assets/brand/cofi-logo.png'
+import centralLogo from '../../assets/brand/central-logo.png'
+import companyLogo from '../../assets/brand/company-logo.png'
 import './Home.css'
 
 /**
- * Home — the landing page. Five worlds orbit a central Black Hole in a star
- * configuration echoing the card-back sigil. Three planets are revealed and
- * clickable (→ their lore page); the two expansion planets are darkened with
- * their names replaced by "À venir / To be announced".
+ * Home — the landing page. Five worlds surround the central turning logo in the
+ * client's pentagon order (Xaraglione top, Verdito right, Solanar bottom-right,
+ * Didaris bottom-left, Orga left). The three revealed planets are clickable
+ * (→ their lore page); Didaris/Solanar use their blackened "to be announced"
+ * art until official release. Planet art is painted as CSS backgrounds and the
+ * context menu is blocked, so the images can't be right-click saved.
  *
  * Positioning uses CSS translate(-50%,-50%); the entrance is a CSS animation
  * (opacity on the button, scale on the body) so it never fights the centering.
@@ -18,30 +22,39 @@ export default function Home() {
   const { t } = useLang()
   const navigate = useNavigate()
 
-  // Evenly place the five planets around the circle, first one at the top.
+  // Pentagon: evenly spaced, first planet at the top, clockwise.
   const R = 39 // orbit radius, % of the square orbit box
-  const positions = PLANETS.map((_, i) => {
-    const angle = ((-90 + i * (360 / PLANETS.length)) * Math.PI) / 180
-    return { left: 50 + R * Math.cos(angle), top: 50 + R * Math.sin(angle) }
+  const planets = HOME_ORBIT_ORDER.map((id, i) => {
+    const angle = ((-90 + i * (360 / HOME_ORBIT_ORDER.length)) * Math.PI) / 180
+    return {
+      ...PLANET_BY_ID[id],
+      left: 50 + R * Math.cos(angle),
+      top: 50 + R * Math.sin(angle),
+    }
   })
 
   return (
-    <section className="home">
+    <section className="home" onContextMenu={(e) => e.preventDefault()}>
       <header className="home__hero">
-        <h2 className="home__title">Chains of Innocence</h2>
+        {/* Client: use the COFI Logo file — no text title (Rev 1, step 6). */}
+        <img
+          className="home__logo"
+          src={cofiLogo}
+          alt="Chains of Innocence"
+          draggable="false"
+        />
         <p className="home__intro">{t(UI.homeIntro)}</p>
       </header>
 
       <div className="home__system" role="navigation" aria-label={t(UI.navHome)}>
-        {/* Central black hole */}
+        {/* Central black hole, crowned by the client's turning logo. */}
         <div className="blackhole" aria-hidden="true">
           <div className="blackhole__disc" />
           <div className="blackhole__ring" />
-          <Sigil size={92} className="blackhole__sigil" />
+          <img className="blackhole__logo" src={centralLogo} alt="" draggable="false" />
         </div>
 
-        {PLANETS.map((planet, i) => {
-          const pos = positions[i]
+        {planets.map((planet, i) => {
           const clickable = !planet.tba
           return (
             <button
@@ -49,24 +62,39 @@ export default function Home() {
               type="button"
               className={`orbit-planet ${planet.tba ? 'is-tba' : ''}`}
               style={{
-                left: `${pos.left}%`,
-                top: `${pos.top}%`,
+                left: `${planet.left}%`,
+                top: `${planet.top}%`,
                 '--planet': planet.color,
-                '--planet-grad': planet.gradient,
+                '--planet-img': `url(${planet.tba ? planet.tbaImg : planet.img})`,
                 '--i': i,
               }}
               disabled={!clickable}
               onClick={() => clickable && navigate(`/planet/${planet.id}`)}
-              aria-label={planet.tba ? t(UI.toBeAnnounced) : t(planet.name)}
+              aria-label={planet.tba ? t(UI.toBeAnnounced) : planet.name}
             >
               <span className="orbit-planet__body" />
               <span className="orbit-planet__label">
-                {planet.tba ? t(UI.toBeAnnounced) : t(planet.name)}
+                {planet.tba ? t(UI.toBeAnnounced) : planet.name}
               </span>
             </button>
           )
         })}
       </div>
+
+      {/* Company logo above the legal mentions (Rev 1, steps 8-9). */}
+      <footer className="home__footer">
+        <img
+          className="home__company"
+          src={companyLogo}
+          alt="Malmaison Games"
+          draggable="false"
+        />
+        <p className="home__legal">
+          {t(UI.legalLine1)}
+          <br />
+          {t(UI.legalLine2)}
+        </p>
+      </footer>
     </section>
   )
 }
