@@ -1,230 +1,112 @@
 .card-slot {
-  perspective: 1400px;
-  width: 100%;
-  aspect-ratio: 3 / 4.2;
-}
-
-.card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
-  cursor: pointer;
-  border-radius: 18px;
-  outline: none;
-}
-
-.card:focus-visible {
-  box-shadow: 0 0 0 3px var(--accent);
-  border-radius: 18px;
-}
-
-.card.is-flipped {
-  transform: rotateY(180deg);
-}
-
-.card__face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: 18px;
-  overflow: hidden;
-}
-
-.card__face--back {
-  transform: rotateY(180deg);
-}
-
-.card__frame {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
-  background: var(--scene-gradient);
-  box-shadow:
-    inset 0 0 40px rgba(0, 0, 0, 0.6),
-    0 12px 30px rgba(0, 0, 0, 0.55),
-    0 0 22px color-mix(in srgb, var(--glow) 40%, transparent);
-  overflow: hidden;
-}
-
-.card-slot:hover .card:not(.is-flipped) {
-  transform: translateY(-6px) rotateX(4deg);
-}
-
-/* ---------- FRONT ---------- */
-.card__shroud {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.85));
-}
-
-.card__glyph {
-  font-size: clamp(3rem, 9vw, 5.5rem);
-  color: color-mix(in srgb, var(--accent) 70%, #fff);
-  text-shadow: 0 0 26px var(--glow);
-  opacity: 0.55;
-  filter: blur(0.4px);
-  animation: glyph-pulse 4.5s ease-in-out infinite;
-}
-
-@keyframes glyph-pulse {
-  0%, 100% { opacity: 0.4; transform: scale(0.97); }
-  50% { opacity: 0.7; transform: scale(1.03); }
-}
-
-.card__noise {
-  position: absolute;
-  inset: 0;
-  opacity: 0.06;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.4) 0px,
-    rgba(255, 255, 255, 0.4) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  mix-blend-mode: overlay;
-}
-
-.card__front-meta {
-  position: absolute;
-  inset: auto 0 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 0.9rem;
-  z-index: 6;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.card__rarity-tag {
-  font-weight: 700;
-  text-shadow: 0 0 10px currentColor;
-}
-
-.card__hint {
-  color: color-mix(in srgb, var(--text) 70%, transparent);
-  animation: hint-blink 2.6s ease-in-out infinite;
-}
-
-@keyframes hint-blink {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.9; }
-}
-
-/* ---------- BACK ---------- */
-.card__frame--revealed {
   display: flex;
   flex-direction: column;
-  padding: 0.85rem 0.9rem 1rem;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--surface-raised) 80%, transparent), var(--surface)),
-    var(--scene-gradient);
-}
-
-.card__header {
-  display: flex;
-  align-items: center;
   gap: 0.55rem;
-  margin-bottom: 0.6rem;
+  animation: card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 0.05s);
 }
 
-.card__cost {
-  flex: none;
-  width: 2rem;
-  height: 2rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  font-weight: 800;
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent) 80%, #fff), var(--accent-soft));
-  color: #03121a;
-  box-shadow: 0 0 14px var(--glow);
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(26px) scale(0.95); }
+  to { opacity: 1; transform: none; }
 }
 
-.card__name {
-  font-size: 1.02rem;
-  line-height: 1.1;
-  color: #fff;
-  text-shadow: 0 0 12px var(--glow);
-}
-
-.card__art {
+.card-tile {
   position: relative;
-  height: 38%;
-  border-radius: 12px;
-  margin-bottom: 0.6rem;
-  display: grid;
-  place-items: center;
+  border-radius: 14px;
+  aspect-ratio: 442 / 672;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 65%),
-    color-mix(in srgb, #000 55%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  outline: none;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
 }
 
-.card__art-glyph {
-  font-size: 3.4rem;
-  color: color-mix(in srgb, var(--accent) 80%, #fff);
-  text-shadow: 0 0 22px var(--glow);
-  animation: glyph-pulse 5s ease-in-out infinite;
+.card-slot.is-released .card-tile {
+  cursor: pointer;
 }
 
-.card__typeline {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+.card-slot.is-released .card-tile:hover,
+.card-slot.is-released .card-tile:focus-visible {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.55),
+    0 0 26px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.card-slot.is-locked .card-tile {
+  cursor: default;
+  filter: saturate(0.55) brightness(0.62);
+}
+
+.card-tile__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Neon rarity badge — bright, colour-coded, floating on the art. */
+.card-tile__rarity {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.14rem 0.7rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--text) 75%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  padding-bottom: 0.35rem;
-  margin-bottom: 0.5rem;
+  color: var(--rarity);
+  background: rgba(4, 6, 12, 0.72);
+  border: 1px solid color-mix(in srgb, var(--rarity) 70%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--rarity) 55%, transparent),
+    inset 0 0 8px color-mix(in srgb, var(--rarity) 25%, transparent);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--rarity) 80%, transparent);
+  backdrop-filter: blur(3px);
+  white-space: nowrap;
 }
 
-.card__origin {
-  color: var(--accent);
+.card-tile__lock {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.12rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(220, 235, 255, 0.7);
+  background: rgba(4, 6, 12, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(3px);
 }
 
-.card__ability {
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin: 0 0 0.5rem;
-  color: var(--text);
-}
-
-.card__flavor {
-  font-size: 0.74rem;
-  font-style: italic;
-  line-height: 1.3;
-  margin: 0;
-  color: color-mix(in srgb, var(--text) 62%, transparent);
-}
-
-.card__stats {
-  margin-top: auto;
-  padding-top: 0.6rem;
+.card-slot__caption {
   display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: 1.05rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  text-align: center;
 }
 
-.card__stat {
-  padding: 0.2rem 0.6rem;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.35);
+.card-slot__ref {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--accent) 75%, #ffffff);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-.card__stat--pow { color: #ff8d6b; }
-.card__stat--def { color: #7fc6ff; }
+.card-slot__name {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #eef4ff;
+  line-height: 1.2;
+}
+.card-slot__name.is-unknown {
+  color: rgba(200, 216, 236, 0.5);
+  letter-spacing: 0.1em;
+}

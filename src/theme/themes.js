@@ -1,68 +1,35 @@
-// Per-aspect design tokens. Components read these (mostly by injecting them as
-// CSS custom properties) so that a planet's "world" colour and mood flows
-// through the background, side panel, and every card it owns.
+// Design tokens for Chains of Innocence.
+//
+// The catalog is browsed *by card category*, and every card is tinted with its
+// own frame colour (defined in data/categories.js). Rather than a fixed set of
+// "aspect" palettes, components derive their neon accent from a single colour
+// via accentVars(); surface/text defaults come from :root in global.css.
 
-export const THEMES = {
-  tech: {
-    label: 'Tech',
-    accent: '#39f5e6',
-    accentSoft: '#1b8c8c',
-    glow: 'rgba(57, 245, 230, 0.55)',
-    smoke: 'rgba(150, 240, 255, 0.62)',
-    smokeSolid: '#8fe9ff',
-    surface: '#06141b',
-    surfaceRaised: '#0c2230',
-    text: '#dffaff',
-    gradient: 'radial-gradient(circle at 30% 20%, #0a3a44 0%, #04141b 55%, #01080c 100%)',
-    motif: 'circuitry & holographic grids',
-  },
-  mystical: {
-    label: 'Mystical',
-    accent: '#b486ff',
-    accentSoft: '#6f4bd8',
-    glow: 'rgba(180, 134, 255, 0.55)',
-    smoke: 'rgba(200, 175, 255, 0.62)',
-    smokeSolid: '#c9b3ff',
-    surface: '#0c0820',
-    surfaceRaised: '#1a123a',
-    text: '#efe6ff',
-    gradient: 'radial-gradient(circle at 70% 25%, #2a1c5e 0%, #120a30 55%, #070418 100%)',
-    motif: 'arcane runes & aurora light',
-  },
-  beastial: {
-    label: 'Beastial',
-    accent: '#ff6a3d',
-    accentSoft: '#b8351c',
-    glow: 'rgba(255, 106, 61, 0.55)',
-    smoke: 'rgba(255, 160, 100, 0.60)',
-    smokeSolid: '#ff9e6b',
-    surface: '#1a0907',
-    surfaceRaised: '#2c1410',
-    text: '#ffe9df',
-    gradient: 'radial-gradient(circle at 35% 75%, #5e1f12 0%, #2a0d08 55%, #140503 100%)',
-    motif: 'embered jungle & primal energy',
-  },
-}
-
-// Rarity → accent ring used on the card frame, independent of aspect.
+// Rarity → neon accent. Placeholder ladder; the client will confirm the exact
+// levels and we only need to adjust these hex values + the ORDER array.
 export const RARITY_COLORS = {
-  Rare: '#6fb7ff',
-  Epic: '#c879ff',
-  Legendary: '#ffcf5c',
+  Common: '#9fb2c9',
+  Uncommon: '#57e39b',
+  Rare: '#4aa8ff',
+  Epic: '#c46bff',
+  Legendary: '#ffcf4d',
+  Mythic: '#ff5d7a',
 }
 
-// Build the CSS custom-property object for a given aspect.
-export function themeVars(aspect) {
-  const t = THEMES[aspect] ?? THEMES.tech
+export const RARITY_ORDER = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic']
+
+export function rarityColor(rarity) {
+  return RARITY_COLORS[rarity] ?? 'var(--accent)'
+}
+
+// Build CSS custom properties that tint a subtree with a single accent colour.
+// color-mix keeps the soft/glow derivations in CSS so we avoid JS colour maths.
+export function accentVars(color) {
+  const c = color ?? '#39f5e6'
   return {
-    '--accent': t.accent,
-    '--accent-soft': t.accentSoft,
-    '--glow': t.glow,
-    '--smoke': t.smoke,
-    '--smoke-solid': t.smokeSolid,
-    '--surface': t.surface,
-    '--surface-raised': t.surfaceRaised,
-    '--text': t.text,
-    '--scene-gradient': t.gradient,
+    '--accent': c,
+    '--accent-soft': `color-mix(in srgb, ${c} 55%, #05060a)`,
+    '--glow': `color-mix(in srgb, ${c} 60%, transparent)`,
+    '--accent-dim': `color-mix(in srgb, ${c} 32%, transparent)`,
   }
 }

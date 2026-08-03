@@ -1,0 +1,182 @@
+.home {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(1.2rem, 3vw, 2.4rem);
+  overflow-y: auto;
+  animation: home-in 0.5s ease both;
+}
+
+@keyframes home-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.home__hero {
+  text-align: center;
+  margin-bottom: clamp(0.5rem, 2vh, 1.5rem);
+  max-width: 46ch;
+}
+
+.home__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(100deg, #8fd9ff, #c79bff, #ff9a6b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 22px rgba(150, 190, 255, 0.25));
+}
+
+.home__intro {
+  margin: 0.7rem 0 0;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  line-height: 1.55;
+  color: rgba(223, 238, 255, 0.66);
+}
+
+/* ── The orbital system ───────────────────────────────────────────────────── */
+.home__system {
+  position: relative;
+  width: min(74vh, 90%, 640px);
+  aspect-ratio: 1 / 1;
+  flex: none;
+  margin: auto;
+}
+
+/* Central black hole with an accretion glow + slowly-spinning sigil. */
+.blackhole {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+}
+
+.blackhole__disc {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #000 44%, rgba(0, 0, 0, 0.6) 60%, transparent 72%);
+  box-shadow: 0 0 60px 20px rgba(0, 0, 0, 0.9);
+}
+
+.blackhole__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(143, 217, 255, 0.05),
+    rgba(199, 155, 255, 0.55),
+    rgba(255, 154, 107, 0.5),
+    rgba(143, 217, 255, 0.05)
+  );
+  mask: radial-gradient(circle, transparent 46%, #000 48%, #000 60%, transparent 66%);
+  -webkit-mask: radial-gradient(circle, transparent 46%, #000 48%, #000 60%, transparent 66%);
+  animation: accretion 18s linear infinite;
+  filter: blur(1px);
+}
+
+@keyframes accretion {
+  to { transform: rotate(360deg); }
+}
+
+.blackhole__sigil {
+  position: relative;
+  z-index: 2;
+  color: rgba(233, 244, 255, 0.85);
+  filter: drop-shadow(0 0 14px rgba(160, 210, 255, 0.8));
+  animation: sigil-spin 40s linear infinite reverse;
+}
+
+/* ── Orbiting planets ─────────────────────────────────────────────────────── */
+.orbit-planet {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  /* Fade in only — never a transform here, so the centering above survives. */
+  animation: planet-fade 0.5s ease both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.1s);
+}
+.orbit-planet:disabled { cursor: default; }
+
+@keyframes planet-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.orbit-planet__body {
+  width: clamp(46px, 9vh, 88px);
+  height: clamp(46px, 9vh, 88px);
+  border-radius: 50%;
+  background: var(--planet-grad);
+  box-shadow: 0 0 26px color-mix(in srgb, var(--planet) 60%, transparent),
+    inset -6px -8px 18px rgba(0, 0, 0, 0.6),
+    inset 4px 4px 12px rgba(255, 255, 255, 0.14);
+  transition: box-shadow 0.25s ease;
+  animation: planet-pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.1s);
+}
+
+@keyframes planet-pop {
+  from { transform: scale(0.4); }
+  to { transform: scale(1); }
+}
+
+.orbit-planet:hover:not(:disabled) .orbit-planet__body {
+  box-shadow: 0 0 40px color-mix(in srgb, var(--planet) 85%, transparent),
+    inset -6px -8px 18px rgba(0, 0, 0, 0.6),
+    inset 4px 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.orbit-planet__label {
+  font-family: var(--font-display);
+  font-size: clamp(0.66rem, 1.2vw, 0.84rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #eaf4ff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+/* Expansion planets: darkened, muted label. */
+.orbit-planet.is-tba .orbit-planet__body {
+  background: radial-gradient(circle at 35% 30%, #2a3644 0%, #141c26 45%, #05080c 100%);
+  box-shadow: inset -6px -8px 18px rgba(0, 0, 0, 0.7);
+  opacity: 0.7;
+}
+.orbit-planet.is-tba .orbit-planet__label {
+  color: rgba(190, 205, 225, 0.4);
+  font-style: italic;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 820px) {
+  .home { padding: 1rem 0.8rem 2rem; overflow-x: hidden; }
+  .home__hero { margin-bottom: 0.4rem; }
+  .home__title { font-size: clamp(1.5rem, 8vw, 2.2rem); }
+  .home__intro { font-size: 0.85rem; }
+  /* Smaller box + fixed compact bodies so planets AND labels stay on-screen. */
+  .home__system { width: min(84vw, 300px); }
+  .orbit-planet__body { width: 50px; height: 50px; }
+  .orbit-planet__label { font-size: 0.58rem; letter-spacing: 0.05em; }
+  .blackhole { width: 34%; }
+  .blackhole__sigil { width: 62px; height: 62px; }
+}

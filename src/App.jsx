@@ -1,37 +1,32 @@
-import { useState, useMemo } from 'react'
-import { AnimatePresence } from 'framer-motion'
-import SidePanel from './components/SidePanel/SidePanel.jsx'
-import Gallery from './components/Gallery/Gallery.jsx'
-import StarfieldBackground from './components/StarfieldBackground/StarfieldBackground.jsx'
-import PlanetScene from './components/PlanetScene/PlanetScene.jsx'
-import { PLANETS } from './data/planets.js'
-import { themeVars } from './theme/themes.js'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Layout from './components/Layout/Layout.jsx'
+import Home from './components/Home/Home.jsx'
+import Catalog from './components/Gallery/Gallery.jsx'
+import Contact from './components/pages/Contact.jsx'
+import Shop from './components/pages/Shop.jsx'
+import PlanetLore from './components/pages/PlanetLore.jsx'
 import './App.css'
 
+/**
+ * Route table. The persistent shell (Layout) holds the category rail + ambient
+ * background; each route swaps only the centre stage via <Outlet/>.
+ *
+ * Planet lore pages, Contact and Shop are lightweight "coming soon" stubs this
+ * round — the structure is in place for their real content next round.
+ */
 export default function App() {
-  const [activeId, setActiveId] = useState(PLANETS[0].id)
-  const activePlanet = useMemo(
-    () => PLANETS.find((p) => p.id === activeId) ?? PLANETS[0],
-    [activeId],
-  )
-
   return (
-    <div className="app" style={themeVars(activePlanet.aspect)}>
-      {/* Ambient background layers (theme-tinted) */}
-      <StarfieldBackground />
-      <AnimatePresence mode="wait">
-        <PlanetScene key={activePlanet.id} planet={activePlanet} />
-      </AnimatePresence>
-      <div className="app__vignette" />
-
-      {/* Foreground UI */}
-      <SidePanel planets={PLANETS} activeId={activeId} onSelect={setActiveId} />
-
-      <main className="app__stage">
-        <AnimatePresence mode="wait">
-          <Gallery key={activePlanet.id} planet={activePlanet} />
-        </AnimatePresence>
-      </main>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="cards" element={<Catalog />} />
+        <Route path="cards/:group" element={<Catalog />} />
+        <Route path="cards/:group/:subtype" element={<Catalog />} />
+        <Route path="planet/:id" element={<PlanetLore />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="shop" element={<Shop />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
   )
 }

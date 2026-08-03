@@ -1,9 +1,9 @@
 {
-  "name": "stellar-deck",
+  "name": "chainsofinnocence",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "A showcase gallery for a planet-themed card game (tech, mystical, beastial).",
+  "description": "Official website for Chains of Innocence — a collectible card game.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,7 +12,8 @@
   "dependencies": {
     "framer-motion": "^11.3.19",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",

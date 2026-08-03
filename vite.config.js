@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// The site is served from https://ablirjm.github.io/stellar-deck/
-// so all asset URLs must be prefixed with the repo name in production.
+// Served from the domain root, so assets resolve against '/'.
 export default defineConfig({
-  base: '/stellar-deck/',
+  base: '/',
   plugins: [react()],
 })

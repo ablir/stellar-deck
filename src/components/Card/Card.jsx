@@ -1,19 +1,25 @@
-import { motion } from 'framer-motion'
-import { CardFront } from './CardFaces.jsx'
-import { RARITY_COLORS, themeVars } from '../../theme/themes.js'
+import { SUBTYPES } from '../../data/categories.js'
+import { accentVars, rarityColor } from '../../theme/themes.js'
+import { useLang } from '../../i18n/LanguageContext.jsx'
+import { UI } from '../../i18n/strings.js'
 import './Card.css'
 
 /**
- * Card — the grid tile. It shows the shrouded front (silhouette + dry-ice
- * smoke). Clicking does NOT flip in place; it asks the gallery to open the
- * focused view, where the card flies forward, enlarges and flips while smoke
- * billows from beneath it.
+ * Card — a catalog tile. Shows the real face-up art when the card is released,
+ * otherwise its colour-matched card back. Below the art sits the reference
+ * number and the name ("???" until the card is revealed). Released cards are
+ * clickable and open the info window; unreleased cards are inert.
  */
 export default function Card({ card, index = 0, onOpen }) {
-  const rarityColor = RARITY_COLORS[card.rarity] ?? 'var(--accent)'
+  const { t } = useLang()
+  const sub = SUBTYPES[card.subtype]
+  const img = card.released ? card.front : card.back
+  const name = card.released ? t(card.name) : t(UI.unknownName)
+  const rColor = rarityColor(card.rarity)
 
-  const open = () => onOpen?.(card)
+  const open = () => card.released && onOpen?.(card)
   const onKey = (e) => {
+    if (!card.released) return
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
       open()
@@ -21,25 +27,35 @@ export default function Card({ card, index = 0, onOpen }) {
   }
 
   return (
-    <motion.div
-      className="card-slot"
-      style={{ ...themeVars(card.aspect), '--rarity': rarityColor }}
-      initial={{ opacity: 0, y: 28, scale: 0.94 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      className={`card-slot ${card.released ? 'is-released' : 'is-locked'}`}
+      style={{ ...accentVars(sub?.color), '--rarity': rColor, '--i': Math.min(index, 12) }}
     >
       <div
-        className="card"
-        role="button"
-        tabIndex={0}
-        aria-label={`${card.name}, ${card.rarity} ${card.type}. Tap to reveal.`}
+        className="card-tile"
+        role={card.released ? 'button' : undefined}
+        tabIndex={card.released ? 0 : undefined}
+        aria-label={
+          card.released
+            ? `${name}, ${card.ref}. ${t(UI.close)}`
+            : `${card.ref}, ${t(UI.unreleased)}`
+        }
         onClick={open}
         onKeyDown={onKey}
       >
-        <div className="card__face card__face--front">
-          <CardFront card={card} />
-        </div>
+        <img className="card-tile__img" src={img} alt={name} loading="lazy" draggable="false" />
+        {card.rarity && (
+          <span className="card-tile__rarity" style={{ '--rarity': rColor }}>
+            {card.rarity}
+          </span>
+        )}
+        {!card.released && <span className="card-tile__lock">{t(UI.unreleased)}</span>}
       </div>
-    </motion.div>
+
+      <div className="card-slot__caption">
+        <span className="card-slot__ref">{card.ref}</span>
+        <span className={`card-slot__name ${card.released ? '' : 'is-unknown'}`}>{name}</span>
+      </div>
+    </div>
   )
 }
