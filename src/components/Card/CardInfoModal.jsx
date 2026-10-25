@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { SUBTYPES } from '../../data/categories.js'
-import { accentVars, rarityColor, rarityLabel } from '../../theme/themes.js'
+import { accentVars, rarityColor } from '../../theme/themes.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
 import { UI } from '../../i18n/strings.js'
 import './CardInfoModal.css'
@@ -62,8 +62,8 @@ export default function CardInfoModal({ card, onClose }) {
           </span>
           <h3 className="cardinfo__name">{t(card.name)}</h3>
 
+          {/* Rarity hidden for now at the client's request (data kept). */}
           <div className="cardinfo__meta">
-            <span className="cardinfo__rarity">{t(rarityLabel(card.rarity))}</span>
             <span className="cardinfo__ref">{card.ref}</span>
           </div>
 

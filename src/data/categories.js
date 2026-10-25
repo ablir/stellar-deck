@@ -4,58 +4,67 @@
 //   Bestiary → Character → Enhancement → Unique.
 // Each subtype carries the neon frame colour of the real printed card, so the
 // rail doubles as a colour legend and drives the per-card theme (accentVars).
+// `label` is the catalog heading; `navLabel` (when set) is the rail wording
+// from the client's LEFT MENU brief ("Cartes Monstre" / "Monster cards").
 
 export const GROUPS = [
   {
     id: 'bestiary',
     label: { fr: 'Bestiaire', en: 'Bestiary' },
     blurb: {
-      fr: 'Les créatures du monde : monstres, élites et dévoreurs d’âmes.',
+      fr: 'Les créatures du monde : monstres, élites et spectres.',
       en: 'The world’s creatures: monsters, elites and soul eaters.',
     },
     subtypes: [
-      { id: 'monster', label: { fr: 'Monstre', en: 'Monster' }, color: '#cfd3de' },
-      { id: 'elite', label: { fr: 'Élite', en: 'Elite' }, color: '#f2e400' },
-      { id: 'soul-eater', label: { fr: 'Dévoreur d’âmes', en: 'Soul Eater' }, color: '#2f7bff' },
+      { id: 'monster', label: { fr: 'Monstre', en: 'Monster' }, navLabel: { fr: 'Cartes Monstre', en: 'Monster cards' }, color: '#cfd3de' },
+      { id: 'elite', label: { fr: 'Élite', en: 'Elite' }, navLabel: { fr: 'Cartes Élite', en: 'Elite cards' }, color: '#f2e400' },
+      { id: 'soul-eater', label: { fr: 'Spectre', en: 'Soul Eater' }, navLabel: { fr: 'Cartes Spectre', en: 'Soul Eater cards' }, color: '#2f7bff' },
     ],
   },
   {
     id: 'character',
-    label: { fr: 'Personnage', en: 'Character' },
+    label: { fr: 'Sociétés', en: 'Civilizations' },
     blurb: {
-      fr: 'Ceux qui mènent le combat : héros, rôles et célestes.',
+      fr: 'Ceux qui mènent le combat : héros, rôles et chimères.',
       en: 'Those who lead the fight: heroes, roles and celestials.',
     },
     subtypes: [
-      { id: 'hero', label: { fr: 'Héros', en: 'Hero' }, color: '#ff3b3b' },
-      { id: 'role', label: { fr: 'Rôle', en: 'Role' }, color: '#ff5fa8' },
-      { id: 'celestial', label: { fr: 'Céleste', en: 'Celestial' }, color: '#a05bff' },
+      { id: 'hero', label: { fr: 'Héros', en: 'Hero' }, navLabel: { fr: 'Cartes Héros', en: 'Hero cards' }, color: '#ff3b3b' },
+      { id: 'role', label: { fr: 'Rôle', en: 'Role' }, navLabel: { fr: 'Cartes de Rôle', en: 'Role cards' }, color: '#ff5fa8' },
+      { id: 'celestial', label: { fr: 'Chimère', en: 'Celestial' }, navLabel: { fr: 'Cartes Chimère', en: 'Celestial cards' }, color: '#a05bff' },
     ],
   },
   {
     id: 'enhancement',
-    label: { fr: 'Amélioration', en: 'Enhancement' },
+    label: { fr: 'Atouts', en: 'Assets' },
     blurb: {
       fr: 'Ce qui renforce et transforme : domaines et clés.',
       en: 'What strengthens and transforms: domains and keys.',
     },
     subtypes: [
-      { id: 'domain', label: { fr: 'Domaine', en: 'Domain' }, color: '#37e06a' },
-      { id: 'key', label: { fr: 'Clé', en: 'Key' }, color: '#ff9b2f' },
+      { id: 'domain', label: { fr: 'Domaine', en: 'Domain' }, navLabel: { fr: 'Cartes Domaine', en: 'Domain cards' }, color: '#37e06a' },
+      { id: 'key', label: { fr: 'Clé', en: 'Key' }, navLabel: { fr: 'Cartes Clé', en: 'Key cards' }, color: '#ff9b2f' },
     ],
   },
   {
     id: 'unique',
-    label: { fr: 'Unique', en: 'Unique' },
+    label: { fr: 'Spéciales', en: 'Specials' },
     blurb: {
-      fr: 'Les cartes à part : Xtra et cartes joueur.',
-      en: 'The cards apart: Xtra and player cards.',
+      fr: 'Les cartes à part : Extra, Joueur, Arcanogives et Séries Limitées.',
+      en: 'The cards apart: Xtra, Player, Arcammo and Masterpiece Series.',
     },
     subtypes: [
       // Xtra: black card with a neon-glowing yellow "X".
-      { id: 'xtra', label: { fr: 'Xtra', en: 'Xtra' }, color: '#ffe600', special: 'xtra' },
+      { id: 'xtra', label: { fr: 'Xtra', en: 'Xtra' }, navLabel: { fr: 'Cartes Extra', en: 'Xtra cards' }, color: '#ffe600', special: 'xtra' },
+      // Arcammo: same neon "X" icon as Xtra (client), sits right under it; no
+      // cards yet so it stays a passive "coming soon" entry.
+      { id: 'arcammo', label: { fr: 'Arcanogives', en: 'Arcammo' }, color: '#ffe600', special: 'xtra', comingSoon: true },
       // Player: glittering rainbow colours.
-      { id: 'player', label: { fr: 'Joueur', en: 'Player' }, color: '#ffffff', special: 'rainbow' },
+      { id: 'player', label: { fr: 'Joueur', en: 'Player' }, navLabel: { fr: 'Cartes Joueur', en: 'Player cards' }, color: '#ffffff', special: 'rainbow' },
+      // Announced in the LEFT MENU brief — no cards, art or colour yet, so it
+      // sits in the rail as a passive "coming soon" entry.
+      // Masterpiece: sapphire gem icon with a faint glint (client).
+      { id: 'masterpiece', label: { fr: 'Séries Limitées', en: 'Masterpiece Series' }, color: '#3b7bff', special: 'sapphire', comingSoon: true },
     ],
   },
 ]

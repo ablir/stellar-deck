@@ -8,7 +8,7 @@ import './pages.css'
 /**
  * PlanetLore — a planet's story page, laid out per Revision 2:
  * planet art top-centre → name → flavour subtitle → the full lore in a narrow
- * central column → back-to-home → legal mentions at the very end.
+ * central column → back-to-home.
  *
  * The playmat background sits on a fixed layer behind the scroll container
  * (heavily dimmed so the text stays readable) while the text scrolls over it.
@@ -20,7 +20,7 @@ export default function PlanetLore() {
   const { t } = useLang()
   const planet = PLANET_BY_ID[id]
 
-  if (!planet || planet.tba) {
+  if (!planet || planet.tba || planet.locked) {
     return (
       <section className="stub">
         <span className="stub__kicker">Chains of Innocence</span>
@@ -72,12 +72,6 @@ export default function PlanetLore() {
           <Link to="/" className="lore__back">
             ← {t(UI.backHome)}
           </Link>
-
-          <footer className="lore__legal">
-            {t(UI.legalLine1)}
-            <br />
-            {t(UI.legalLine2)}
-          </footer>
         </article>
       </motion.div>
     </div>

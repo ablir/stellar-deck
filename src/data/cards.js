@@ -1,7 +1,9 @@
 // The card catalog.
 //
-// Released cards show their real face-up art; unreleased cards show the matching
-// card BACK (by colour) plus their reference number and "???" for the name.
+// Every set is generated from SETS below (client sizes, 2026-08-29): each slot
+// is an unreleased card showing its colour-matched BACK, its reference (letter
+// + 4 digits, e.g. M0001) and "???" for the name. Real cards live in RELEASED
+// and are merged over their slot by reference.
 //
 // Only the three bestiary test cards are RELEASED right now. Everything else is
 // a clearly-marked placeholder awaiting real art + the client's French/English
@@ -10,16 +12,31 @@
 import monsterFront from '../assets/Test Black Card.png'
 import eliteFront from '../assets/Test Yellow Card.png'
 import soulEaterFront from '../assets/Test Blue Card.png'
-import blackBack from '../assets/(FINAL PNG) Black Back Card.png'
-import yellowBack from '../assets/(FINAL PNG) Yellow Back Card.png'
-import blueBack from '../assets/(FINAL PNG) Blue Back Card.png'
+// Card backs — the client's "legal" versions (2026-08-29 delivery), one per
+// subtype, matching the printed frame colours in data/categories.js.
+import blackBack from '../assets/backs/black-back.png'
+import yellowBack from '../assets/backs/yellow-back.png'
+import blueBack from '../assets/backs/blue-back.png'
+import redBack from '../assets/backs/red-back.png'
+import pinkBack from '../assets/backs/pink-back.png'
+import violetBack from '../assets/backs/violet-back.png'
+import greenBack from '../assets/backs/green-back.png'
+import orangeBack from '../assets/backs/orange-back.png'
+import xtraBack from '../assets/backs/xtra-back.png'
+import playerBack from '../assets/backs/player-back.png'
 
-// Card back to show for an unreleased card of a given subtype. Only the three
-// bestiary backs exist so far; other categories fall back to the black back.
+// Card back to show for an unreleased card of a given subtype.
 const BACKS = {
   monster: blackBack,
   elite: yellowBack,
   'soul-eater': blueBack,
+  hero: redBack,
+  role: pinkBack,
+  celestial: violetBack,
+  domain: greenBack,
+  key: orangeBack,
+  xtra: xtraBack,
+  player: playerBack,
   default: blackBack,
 }
 
@@ -27,16 +44,36 @@ export function backFor(subtype) {
   return BACKS[subtype] ?? BACKS.default
 }
 
-export const CARDS = [
-  // ── Bestiary · Monster (RELEASED) ──────────────────────────────────────────
+// Showcase switch: while false, every card is shown BACK-ONLY (no face-up art,
+// name, rarity or info window) regardless of its own `released` flag. Flip to
+// true to reveal the released cards again — nothing else needs to change.
+export const SHOW_FRONTS = false
+
+// Set sizes and reference letters — client figures (2026-08-29). References
+// follow the client format: <letter><4 digits>, e.g. M0001.
+export const SETS = [
+  { subtype: 'monster', group: 'bestiary', prefix: 'M', count: 340 },
+  { subtype: 'elite', group: 'bestiary', prefix: 'E', count: 137 },
+  { subtype: 'soul-eater', group: 'bestiary', prefix: 'S', count: 53 },
+  { subtype: 'hero', group: 'character', prefix: 'H', count: 437 },
+  { subtype: 'role', group: 'character', prefix: 'R', count: 222 },
+  { subtype: 'celestial', group: 'character', prefix: 'C', count: 109 },
+  { subtype: 'domain', group: 'enhancement', prefix: 'D', count: 155 },
+  { subtype: 'key', group: 'enhancement', prefix: 'K', count: 65 },
+  { subtype: 'xtra', group: 'unique', prefix: 'X', count: 378 },
+  { subtype: 'player', group: 'unique', prefix: 'P', count: 51 },
+]
+
+// Released cards: full data, keyed into their slot by `ref`. Only the three
+// bestiary test cards exist so far; the copy is placeholder pending the
+// client's French/English text, stats and confirmed rarity.
+const RELEASED = [
+  // ── Monster ────────────────────────────────────────────────────────────────
   {
-    id: 'bes-monster-001',
-    ref: 'BES-M-001',
-    group: 'bestiary',
-    subtype: 'monster',
+    id: 'monster-0001',
+    ref: 'M0001',
     released: true,
     front: monsterFront,
-    back: blackBack,
     rarity: 'legendary',
     name: { fr: 'Serpent de Braise', en: 'Emberserpent' }, // placeholder name
     stats: { power: 9, defense: 6, cost: 7 },
@@ -49,25 +86,13 @@ export const CARDS = [
       en: 'Coiled in the caldera, it waits only for a spark to wake. (placeholder lore)',
     },
   },
-  {
-    id: 'bes-monster-002',
-    ref: 'BES-M-002',
-    group: 'bestiary',
-    subtype: 'monster',
-    released: false,
-    back: blackBack,
-    rarity: 'rare',
-  },
 
-  // ── Bestiary · Elite (RELEASED) ────────────────────────────────────────────
+  // ── Elite ──────────────────────────────────────────────────────────────────
   {
-    id: 'bes-elite-001',
-    ref: 'BES-E-001',
-    group: 'bestiary',
-    subtype: 'elite',
+    id: 'elite-0001',
+    ref: 'E0001',
     released: true,
     front: eliteFront,
-    back: yellowBack,
     rarity: 'epic',
     name: { fr: 'Archimage Foudroyant', en: 'Stormcaller Archmage' }, // placeholder name
     stats: { power: 6, defense: 5, cost: 5 },
@@ -80,25 +105,13 @@ export const CARDS = [
       en: 'His blue magic tears the veil between worlds. (placeholder lore)',
     },
   },
-  {
-    id: 'bes-elite-002',
-    ref: 'BES-E-002',
-    group: 'bestiary',
-    subtype: 'elite',
-    released: false,
-    back: yellowBack,
-    rarity: 'uncommon',
-  },
 
-  // ── Bestiary · Soul Eater (RELEASED) ───────────────────────────────────────
+  // ── Soul Eater ─────────────────────────────────────────────────────────────
   {
-    id: 'bes-soul-001',
-    ref: 'BES-S-001',
-    group: 'bestiary',
-    subtype: 'soul-eater',
+    id: 'soul-eater-0001',
+    ref: 'S0001',
     released: true,
     front: soulEaterFront,
-    back: blueBack,
     rarity: 'rare',
     name: { fr: 'Œil Dévoreur', en: 'Devouring Eye' }, // placeholder name
     stats: { power: 5, defense: 4, cost: 4 },
@@ -111,29 +124,19 @@ export const CARDS = [
       en: 'It never blinks. It never forgets. It is always hungry. (placeholder lore)',
     },
   },
-  {
-    id: 'bes-soul-002',
-    ref: 'BES-S-002',
-    group: 'bestiary',
-    subtype: 'soul-eater',
-    released: false,
-    back: blueBack,
-    rarity: 'epic',
-  },
-
-  // ── Character (all unreleased — art & copy pending) ─────────────────────────
-  { id: 'chr-hero-001', ref: 'CHR-H-001', group: 'character', subtype: 'hero', released: false, back: blackBack, rarity: 'legendary' },
-  { id: 'chr-role-001', ref: 'CHR-R-001', group: 'character', subtype: 'role', released: false, back: blackBack, rarity: 'rare' },
-  { id: 'chr-cele-001', ref: 'CHR-C-001', group: 'character', subtype: 'celestial', released: false, back: blackBack, rarity: 'ultra-rare' },
-
-  // ── Enhancement (all unreleased) ────────────────────────────────────────────
-  { id: 'enh-dom-001', ref: 'ENH-D-001', group: 'enhancement', subtype: 'domain', released: false, back: blackBack, rarity: 'uncommon' },
-  { id: 'enh-key-001', ref: 'ENH-K-001', group: 'enhancement', subtype: 'key', released: false, back: blackBack, rarity: 'rare' },
-
-  // ── Unique (all unreleased) ─────────────────────────────────────────────────
-  { id: 'unq-xtra-001', ref: 'UNQ-X-001', group: 'unique', subtype: 'xtra', released: false, back: blackBack, rarity: 'epic' },
-  { id: 'unq-player-001', ref: 'UNQ-P-001', group: 'unique', subtype: 'player', released: false, back: blackBack, rarity: 'ultra-rare' },
 ]
+const RELEASED_BY_REF = Object.fromEntries(RELEASED.map((c) => [c.ref, c]))
+
+const CARD_DATA = SETS.flatMap(({ subtype, group, prefix, count }) =>
+  Array.from({ length: count }, (_, i) => {
+    const n = String(i + 1).padStart(4, '0')
+    const ref = `${prefix}${n}`
+    const slot = { id: `${subtype}-${n}`, ref, group, subtype, released: false, back: backFor(subtype) }
+    return RELEASED_BY_REF[ref] ? { ...slot, ...RELEASED_BY_REF[ref] } : slot
+  }),
+)
+
+export const CARDS = SHOW_FRONTS ? CARD_DATA : CARD_DATA.map((c) => ({ ...c, released: false }))
 
 // Cards for a given group id (or all cards when no group given).
 export function cardsForGroup(groupId) {

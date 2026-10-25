@@ -61,6 +61,12 @@
   text-transform: uppercase;
 }
 
+/* Unreleased cards carry their "to be released" badge at the TOP of the tile;
+   rarity on face-up cards stays centre-bottom. */
+.card-slot.is-locked .card-tile__meta {
+  inset: 0 0 auto 0;
+}
+
 .card-tile__rarity {
   font-weight: 700;
   color: var(--rarity);
