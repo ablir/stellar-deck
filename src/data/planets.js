@@ -5,10 +5,11 @@
 //
 // Names, subtitles and the full FR/EN lore below are the client's official copy
 // from "(COFI) Official Website Content Revision 2 (planet presentation)".
-// Didaris and Solanar stay `tba` until official release (Rev 1, Part 1 step 2).
-// On black, the blackened TBA art was invisible, so the home page renders TBA
-// planets as flat colour silhouettes (mask trick in Home.css): visible, but
-// non-distinctive — only the (safe) colour scheme is hinted.
+// Every planet except Xaraglione stays `tba` until official release: the home
+// page renders them as black silhouettes with a coloured rim glow (Home.css) —
+// shape and safe colour scheme hinted, none of the art's detail shown.
+// `locked` is a softer gate still supported by Home.jsx: the real planet art IS
+// shown, but the planet is not clickable and its name reads "to be announced".
 
 import xaraglioneImg from '../assets/planets/xaraglione.png'
 import orgaImg from '../assets/planets/orga.png'
@@ -17,6 +18,8 @@ import didarisImg from '../assets/planets/didaris.png'
 import solanarImg from '../assets/planets/solanar.png'
 import didarisTbaImg from '../assets/planets/didaris-tba.png'
 import solanarTbaImg from '../assets/planets/solanar-tba.png'
+import orgaTbaImg from '../assets/planets/orga-tba.png'
+import verditoTbaImg from '../assets/planets/verdito-tba.png'
 
 import xaraglioneBg from '../assets/planet-lore/xaraglione-bg.png'
 import orgaBg from '../assets/planet-lore/orga-bg.png'
@@ -76,8 +79,9 @@ export const PLANETS = [
     // Client: "Orga is green".
     color: '#3fe06a',
     img: orgaImg,
+    tbaImg: orgaTbaImg,
     bg: orgaBg,
-    tba: false,
+    tba: true,
     lore: {
       fr: [
         'Il existe dans l’univers de véritables joyaux comme Orga, une planète presque entièrement recouverte de forêts titanesques et de végétation luxuriante. La nature règne en maîtresse absolue à travers ces contrées sauvages.',
@@ -117,8 +121,9 @@ export const PLANETS = [
     // Client: "Verdito is red".
     color: '#ff4d4d',
     img: verditoImg,
+    tbaImg: verditoTbaImg,
     bg: verditoBg,
-    tba: false,
+    tba: true,
     lore: {
       fr: [
         'La magie est une force bien mystérieuse. En des temps oubliés de tous, la planète Verdito était si riche en magie que son étouffante présence en consuma ses habitants et les lança dans une guerre si atroce et si gigantesque, que la planète elle-même en fut la principale victime.',

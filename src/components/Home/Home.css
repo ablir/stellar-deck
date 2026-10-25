@@ -166,7 +166,7 @@
 
 /* Expansion planets: the blackened TBA art stays black; a coloured rim glow
    (following the PNG's alpha) lifts the silhouette off the black background —
-   orange halo for Didaris, ice blue for Solanar. Shape and safe colour scheme
+   e.g. yellow halo for Didaris, ice blue for Solanar. Shape and safe colour scheme
    are hinted, none of the art's detail shows. */
 .orbit-planet.is-tba .orbit-planet__body {
   /* Tight bright rim + wide soft halo (--planet-glow can differ from the

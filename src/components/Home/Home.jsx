@@ -10,10 +10,11 @@ import './Home.css'
 /**
  * Home — the landing page. Five worlds surround the central turning logo in the
  * client's pentagon order (Xaraglione top, Verdito right, Solanar bottom-right,
- * Didaris bottom-left, Orga left). The three revealed planets are clickable
- * (→ their lore page); Didaris/Solanar use their blackened "to be announced"
- * art until official release. Planet art is painted as CSS backgrounds and the
- * context menu is blocked, so the images can't be right-click saved.
+ * Didaris bottom-left, Orga left). Only Xaraglione is clickable (→ its lore
+ * page) for now: the other four are `tba` and use their blackened "to be
+ * announced" silhouettes until official release. Planet art is painted as CSS
+ * backgrounds and the context menu is blocked, so the images can't be
+ * right-click saved.
  *
  * Positioning uses CSS translate(-50%,-50%); the entrance is a CSS animation
  * (opacity on the button, scale on the body) so it never fights the centering.
