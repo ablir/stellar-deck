@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { PLANET_BY_ID, HOME_ORBIT_ORDER } from '../../data/planets.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
@@ -22,6 +24,53 @@ import './Home.css'
 export default function Home() {
   const { t } = useLang()
   const navigate = useNavigate()
+
+  // Departure (a clickable planet was clicked) — a full-screen cinematic:
+  //   1. the planet snaps up fast from its orbit slot to ~80% of the screen,
+  //      parked lower-right so it spills off the edge, the system dims;
+  //   2. it holds there while its name is typed out in huge letters with a
+  //      big caret;
+  //   3. the screen fades to black, the route changes, and the black fades
+  //      off the lore page.
+  const [departure, setDeparture] = useState(null) // { planet, rect }
+  const [typed, setTyped] = useState(0)
+  const [flash, setFlash] = useState(false)
+  const GROW_MS = 550 // planet snap-up (matches planet-takeoff in Home.css)
+  const TYPE_START_MS = 450
+  const TYPE_STEP_MS = 110
+  const HOLD_MS = 700 // pause once the name is complete
+  const FLASH_MS = 550 // fade-to-black (matches departure-flash in Home.css)
+
+  useEffect(() => {
+    if (!departure) return undefined
+    const name = departure.planet.name
+    const timers = []
+    // Typewriter.
+    for (let i = 1; i <= name.length; i++) {
+      timers.push(window.setTimeout(() => setTyped(i), TYPE_START_MS + i * TYPE_STEP_MS))
+    }
+    const typedDone = TYPE_START_MS + name.length * TYPE_STEP_MS
+    const flashAt = Math.max(typedDone + HOLD_MS, GROW_MS + HOLD_MS)
+    timers.push(window.setTimeout(() => setFlash(true), flashAt))
+    timers.push(
+      window.setTimeout(() => {
+        // Leave a black veil behind that fades off the lore page on its own.
+        const veil = document.createElement('div')
+        veil.className = 'departure-veil'
+        veil.addEventListener('animationend', () => veil.remove())
+        document.body.appendChild(veil)
+        navigate(`/planet/${departure.planet.id}`)
+      }, flashAt + FLASH_MS),
+    )
+    return () => timers.forEach(window.clearTimeout) // page left early: stop everything
+  }, [departure, navigate])
+
+  const goTo = (planet, event) => {
+    if (departure) return
+    const body = event.currentTarget.querySelector('.orbit-planet__body')
+    const rect = body.getBoundingClientRect()
+    setDeparture({ planet, rect })
+  }
 
   // Pentagon: evenly spaced, first planet at the top, clockwise.
   const R = 39 // orbit radius, % of the square orbit box
@@ -54,7 +103,11 @@ export default function Home() {
         <p className="home__intro">{t(UI.homeIntro)}</p>
       </header>
 
-      <div className="home__system" role="navigation" aria-label={t(UI.navHome)}>
+      <div
+        className={`home__system ${departure ? 'is-leaving' : ''}`}
+        role="navigation"
+        aria-label={t(UI.navHome)}
+      >
         {/* Chains tethering every planet to the central logo (the game is
             "Chains of Innocence"). Drawn in the same 0–100 box as the planet
             positions; links alternate flat / edge-on so they read as a chain. */}
@@ -103,7 +156,7 @@ export default function Home() {
             <button
               key={planet.id}
               type="button"
-              className={`orbit-planet ${planet.tba ? 'is-tba' : ''} ${planet.locked ? 'is-locked' : ''}`}
+              className={`orbit-planet ${planet.tba ? 'is-tba' : ''} ${planet.locked ? 'is-locked' : ''} ${departure?.planet.id === planet.id ? 'is-chosen' : ''}`}
               style={{
                 left: `${planet.left}%`,
                 top: `${planet.top}%`,
@@ -112,8 +165,8 @@ export default function Home() {
                 '--planet-img': `url(${planet.tba ? planet.tbaImg : planet.img})`,
                 '--i': i,
               }}
-              disabled={!clickable}
-              onClick={() => clickable && navigate(`/planet/${planet.id}`)}
+              disabled={!clickable || Boolean(departure)}
+              onClick={(e) => clickable && goTo(planet, e)}
               aria-label={withheld ? t(UI.toBeAnnounced) : planet.name}
             >
               <span className="orbit-planet__body" />
@@ -134,6 +187,30 @@ export default function Home() {
           draggable="false"
         />
       </footer>
+
+      {departure &&
+        createPortal(
+          <div
+            className={`departure ${flash ? 'is-flashing' : ''}`}
+            aria-hidden="true"
+            style={{
+              '--planet': departure.planet.color,
+              '--planet-img': `url(${departure.planet.img})`,
+              '--from-x': `${departure.rect.left + departure.rect.width / 2}px`,
+              '--from-y': `${departure.rect.top + departure.rect.height / 2}px`,
+              '--from-size': `${departure.rect.width}px`,
+            }}
+          >
+            <div className="departure__backdrop" />
+            <div className="departure__planet" />
+            <div className="departure__name">
+              {departure.planet.name.slice(0, typed)}
+              <span className="departure__caret" />
+            </div>
+            <div className="departure__flash" />
+          </div>,
+          document.body,
+        )}
     </section>
   )
 }

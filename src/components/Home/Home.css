@@ -185,6 +185,109 @@
   filter: drop-shadow(0 0 26px color-mix(in srgb, var(--planet) 80%, transparent));
 }
 
+/* Departure (a planet was clicked): the system dims under the full-screen
+   .departure overlay (portaled to <body>, see below). Entrance animations fill
+   forwards at opacity 1, so drop them or the dim would never apply. */
+.home__system.is-leaving .orbit-planet,
+.home__system.is-leaving .chains,
+.home__system.is-leaving .blackhole {
+  transition: opacity 0.4s ease;
+  opacity: 0.1;
+}
+.home__system.is-leaving .orbit-planet,
+.home__system.is-leaving .chain { animation: none; }
+.home__system.is-leaving .orbit-planet.is-chosen { opacity: 0; }
+
+/* ── Departure overlay ───────────────────────────────────────────────────── */
+.departure {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  pointer-events: none;
+}
+.departure__backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 78% 72%, color-mix(in srgb, var(--planet) 22%, #000) 0%, #02050a 60%);
+  animation: planet-fade 0.45s ease both;
+}
+/* The planet: snaps up fast from its orbit slot (--from-*) to ~80vmin,
+   parked lower-right so it spills off the screen, then holds. */
+.departure__planet {
+  position: absolute;
+  left: var(--from-x);
+  top: var(--from-y);
+  width: var(--from-size);
+  height: var(--from-size);
+  transform: translate(-50%, -50%);
+  background: var(--planet-img) center / contain no-repeat;
+  filter: drop-shadow(0 0 40px color-mix(in srgb, var(--planet) 70%, transparent));
+  animation: planet-takeoff 0.55s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+@keyframes planet-takeoff {
+  to {
+    left: 76vw;
+    top: 68vh;
+    width: 92vmin;
+    height: 92vmin;
+  }
+}
+/* The name, typed out huge across the lower part of the screen. */
+.departure__name {
+  position: absolute;
+  left: 5vw;
+  right: 4vw;
+  bottom: 7vh;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 11vw, 9.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--planet) 70%, #ffffff);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--planet) 70%, transparent),
+    0 4px 30px rgba(0, 0, 0, 0.9);
+}
+.departure__caret {
+  display: inline-block;
+  width: 0.12em;
+  height: 0.95em;
+  margin-left: 0.08em;
+  vertical-align: -0.08em;
+  background: color-mix(in srgb, var(--planet) 60%, #ffffff);
+  box-shadow: 0 0 18px var(--planet);
+  animation: caret-blink 0.9s steps(2, start) infinite;
+}
+@keyframes caret-blink { to { visibility: hidden; } }
+/* Outro: the screen fades to black, then the route changes. */
+.departure__flash {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+}
+.departure.is-flashing .departure__flash {
+  animation: departure-flash 0.55s ease-in both;
+}
+@keyframes departure-flash { to { opacity: 1; } }
+/* Left on <body> by Home at navigation: black that fades off the lore page. */
+.departure-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+  pointer-events: none;
+  animation: veil-fade 0.9s ease-out 0.1s both;
+}
+@keyframes veil-fade { to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .departure__planet { animation-duration: 0.01s; }
+  .departure__caret { animation: none; }
+}
+
 /* Client: planet names match their colour and stay readable on black. */
 .orbit-planet__label {
   font-family: var(--font-display);
